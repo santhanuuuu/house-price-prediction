@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered house price prediction using machine learning">
+    <title>HouseAI — Price Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <div class="app-wrapper">
+        <header class="header">
+            <div class="logo" aria-label="HouseAI">
+                <span class="logo-icon">🏠</span>
+                <span class="logo-text">House<span class="accent">AI</span></span>
+            </div>
+            <p class="tagline">Luxury ML Price Intelligence</p>
+        </header>
+
+        <main class="main-grid">
+            <section class="card glass input-card" aria-labelledby="form-title">
+                <div class="card-header">
+                    <h2 id="form-title">Property Details</h2>
+                    <p class="card-subtitle">Enter features to estimate market value</p>
+                </div>
+
+                <form id="prediction-form" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="OverallQual">
+                                <span class="label-icon">⭐</span> Overall Quality
+                            </label>
+                            <input type="number" id="OverallQual" name="OverallQual"
+                                   min="1" max="10" step="1" placeholder="1–10 (e.g. 7)" required>
+                            <span class="hint">Rate overall material & finish (1–10)</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="GrLivArea">
+                                <span class="label-icon">📐</span> Living Area (sq ft)
+                            </label>
+                            <input type="number" id="GrLivArea" name="GrLivArea"
+                                   min="300" max="10000" step="1" placeholder="e.g. 1710" required>
+                            <span class="hint">Above grade living area</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="GarageCars">
+                                <span class="label-icon">🚗</span> Garage Cars
+                            </label>
+                            <input type="number" id="GarageCars" name="GarageCars"
+                                   min="0" max="4" step="1" placeholder="0–4" required>
+                            <span class="hint">Size of garage in car capacity</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TotalBsmtSF">
+                                <span class="label-icon">🏗️</span> Basement (sq ft)
+                            </label>
+                            <input type="number" id="TotalBsmtSF" name="TotalBsmtSF"
+                                   min="0" max="6000" step="1" placeholder="e.g. 856" required>
+                            <span class="hint">Total basement square feet</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="FullBath">
+                                <span class="label-icon">🛁</span> Full Baths
+                            </label>
+                            <input type="number" id="FullBath" name="FullBath"
+                                   min="0" max="5" step="1" placeholder="e.g. 2" required>
+                            <span class="hint">Full bathrooms above grade</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="YearBuilt">
+                                <span class="label-icon">📅</span> Year Built
+                            </label>
+                            <input type="number" id="YearBuilt" name="YearBuilt"
+                                   min="1872" max="2026" step="1" placeholder="e.g. 2003" required>
+                            <span class="hint">Original construction date</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="predict-btn" class="btn-primary">
+                            <span class="btn-text">Predict Price</span>
+                            <span class="btn-icon">✨</span>
+                        </button>
+                        <button type="reset" id="reset-btn" class="btn-secondary">Clear</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card glass result-card" aria-labelledby="result-title">
+                <div class="card-header">
+                    <h2 id="result-title">Estimated Value</h2>
+                    <p class="card-subtitle">Powered by Gradient Boosting ML</p>
+                </div>
+
+                <div id="loading-state" class="loading-state hidden" aria-live="polite">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <p class="loading-text">Analyzing property data…</p>
+                </div>
+
+                <div id="placeholder-state" class="placeholder-state">
+                    <div class="placeholder-icon">💎</div>
+                    <p>Submit property details to receive an AI-driven price estimate.</p>
+                </div>
+
+                <div id="result-state" class="result-state hidden" aria-live="polite">
+                    <p class="result-label">Predicted Sale Price</p>
+                    <p id="predicted-price" class="predicted-price">$0</p>
+                    <div class="result-divider"></div>
+                    <ul id="result-summary" class="result-summary"></ul>
+                    <p class="result-footer">🔒 Model: scikit-learn GradientBoostingRegressor</p>
+                </div>
+
+                <div id="error-state" class="error-state hidden" role="alert">
+                    <span class="error-icon">⚠️</span>
+                    <p id="error-message">Something went wrong.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>House Price ML · Ames Housing Dataset · Flask + scikit-learn</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
